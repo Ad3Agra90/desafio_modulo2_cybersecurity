@@ -1,0 +1,48 @@
+flowchart LR
+  Internet[Internet]
+  WAF[WAF / ModSecurity (CRS)]
+  LB[Load Balancer]
+  App[App Node.js]
+  DB[(PostgreSQL)]
+  SIEM[Coleta / Correlação (Wazuh / Graylog / ELK)]
+  ID[Identidade (IdP / MFA)]
+  Host[Hosts / EDR / Hardening]
+
+  Internet --> WAF
+  WAF --> LB
+  LB --> App
+  App --> DB
+  App --> SIEM
+  DB --> SIEM
+  Host --> SIEM
+  ID --> App
+  ID --> SIEM
+
+  subgraph Perimetro
+    Internet
+    WAF
+  end
+
+  subgraph Rede
+    LB
+  end
+
+  subgraph Aplicacao
+    App
+  end
+
+  subgraph Dados
+    DB
+  end
+
+  subgraph Monitoramento
+    SIEM
+  end
+
+  subgraph Identidade
+    ID
+  end
+
+  subgraph HostLayer
+    Host
+  end
